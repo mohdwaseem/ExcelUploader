@@ -40,7 +40,16 @@ namespace ExcelUploder
             }
             return jobs;
         }
-         
+
+        public void SaveProfession(JobList jobList)
+        {
+            string query = string.Format("INSERT INTO Professions(NIC_Identity)VALUES({0})",jobList.JobId);
+            SqlCommand cmd = new SqlCommand(query, Connect());
+            cmd.CommandType = CommandType.Text;
+            int i = cmd.ExecuteNonQuery();
+
+        }
+
         public List<JobList> Jobs
         {
             get { return (List<JobList>)ViewState["_jobs_"]; }
@@ -101,6 +110,10 @@ namespace ExcelUploder
         {
             var jobs = Jobs;
             var wrong = WrongData;
+            foreach (var item in jobs)
+            {
+                SaveProfession(item);
+            }
 
         }
 
